@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -59,23 +60,52 @@ namespace Multas.Controllers
         [HttpPost]
         //anotador para proteção por roubo de identidade
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Nome,Fotografia,Esquadra")] Agentes agentes)
+        public ActionResult Create([Bind(Include = "Nome,Esquadra")] Agentes agente, HttpPostedFileBase fileUploadFotografia)
         {
+            //determinar o ID do novo agente
+            int novoID = db.Agentes.Max(a =>a.ID)+1;
+            //atribuir id ao novo agente
+            agente.ID = novoID;
+
+            //var.auxiliar
+            string nomeFotografia = "Agente_" + novoID + ".jpg";
+            string caminhoParaFotografia = Path.Combine(Server.MapPath("~/imagens/"),nomeFotografia);//indica onde a imagem será guardada
+
+            //verificar se chega efetivamente um ficheiro ao servidor
+            if (fileUploadFotografia != null)
+            {
+                //guardar o nome da imagem na BD
+                agente.Fotografia = nomeFotografia;
+
+
+            }
+            else {
+                // não há imagem
+                ModelState.AddModelError("", "Não foi fornecida uma imagem...");
+                return View(agente);// reenvia os dados do 'agente' para a view
+            }
+            
+            //redimensionar a imagem --> ver em casa
+            
+
+
             //escrever os dados de um novo Agente na BD
 
             //ModelState.IsValid -> confronta os dados fornecidos da view com as exigências do modelo
             if (ModelState.IsValid)
             {
                 //adiciona o novo agente à BD
-                db.Agentes.Add(agentes);
+                db.Agentes.Add(agente);
                 //faz commit às alterações
                 db.SaveChanges();
+                //guardar a imagem no disco rigido
+                fileUploadFotografia.SaveAs(caminhoParaFotografia);
                 //se tudo correr bem, retorna para a página de index do agente
                 return RedirectToAction("Index");
             }
 
             //se houver um erro, reapresenta os dados do agente
-            return View(agentes);
+            return View(agente);
         }
 
         // GET: Agentes/Edit/5

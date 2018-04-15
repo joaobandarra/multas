@@ -20,7 +20,7 @@ namespace Multas.Models
         public string Matricula { get; set; }
         public string Marca { get; set; }
         public string Modelo { get; set; }
-        public string cor { get; set; }
+        public string Cor { get; set; }
 
 
         //dados do dono da viatura

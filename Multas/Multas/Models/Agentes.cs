@@ -14,7 +14,7 @@ namespace Multas.Models
         }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]//impede que um novo agente tenha um ID auto numbered
         public int ID { get; set; }
 
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório!")]

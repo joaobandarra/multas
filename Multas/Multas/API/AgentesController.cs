@@ -14,7 +14,7 @@ namespace Multas.API
 {
     public class AgentesController : ApiController
     {
-        private MultasDb db = new MultasDb();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Agentes
         public IHttpActionResult GetAgentes()//busca listagem

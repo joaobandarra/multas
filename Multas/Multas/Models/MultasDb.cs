@@ -26,6 +26,8 @@ namespace Multas.Models
 
 
         //configura a forma como as tabelas são criadas
+        //objeto que referencia ao gerador de base de dados
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
